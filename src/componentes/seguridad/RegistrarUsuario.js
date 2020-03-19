@@ -4,6 +4,9 @@ import { compose } from 'recompose';
 import { Container, Avatar, Typography, Grid, TextField, Button } from '@material-ui/core';
 import LockOutLineIcon from '@material-ui/icons/LockOutlined';
 import { consumerFirebase } from '../../server';
+import { crearUsuario } from '../../sesion/actions/sessionAction';
+import { openMensajePantalla } from '../../sesion/actions/snackbarAction';
+import { StateContext } from '../../sesion/store';
 
 const style = {
     paper: {
@@ -34,6 +37,8 @@ const usuarioInicial = {
 }
 
 class RegistrarUsuario extends Component {
+    static contextType = StateContext;
+
     state = {
         firebase: null,
         usuario :{
@@ -62,40 +67,22 @@ class RegistrarUsuario extends Component {
         });
     }
 
-    onSubmit = e => {
+    onSubmit = async e => {
         e.preventDefault();
 
-        console.log('usuario', this.state.usuario);
+        const [{sesion}, dispatch] = this.context;
         const { usuario, firebase } = this.state;
 
-        firebase.auth
-            .createUserWithEmailAndPassword(usuario.email, usuario.password)
-            .then(auth => {
+        let callback = await crearUsuario(dispatch, firebase, usuario);
 
-                const usuarioDB = {
-                    usuarioid: auth.user.uid,
-                    email: usuario.email,
-                    nombre: usuario.nombre,
-                    apellido: usuario.apellido
-                }
-
-                firebase.db
-                    .collection('Users')
-                    .add(usuarioDB)
-                    .then(usuarioGuardado => {
-                        console.log('El usuario se guardo', usuarioGuardado);
-                        this.setState({
-                            usuario: usuarioInicial
-                        });
-                    })
-                    .catch(error => {
-                        console.log('error', error);
-                    })
-            })
-            .catch(error => {
-                console.log(error)
-            })
-
+        if(callback.status) {
+            this.props.history.push('/');
+        }else{
+            openMensajePantalla(dispatch, {
+                open: true,
+                mensaje: callback.mensaje.message
+            });
+        }
         
     }
 
@@ -113,11 +100,11 @@ class RegistrarUsuario extends Component {
                     <form style={style.form}>
                         <Grid container spacing={5}>
                             <Grid item md={6} xs={12}>
-                                <TextField name="nombre" onChange={this.onChange} value={this.state.usuario.nombre} fullWidth label="Ingrese su nombre" />
+                                <TextField name="nombre" onChange={this.onChange} value={this.state.usuario.nombre} fullWidth label="Ingrese su nombre" required/>
                             </Grid>
 
                             <Grid item md={6} xs={12}>
-                                <TextField name="apellido" onChange={this.onChange} value={this.state.usuario.apellido} fullWidth label="Ingrese sus apellidos" />
+                                <TextField name="apellido" onChange={this.onChange} value={this.state.usuario.apellido} fullWidth label="Ingrese sus apellidos" required />
                             </Grid>
 
                             <Grid item md={6} xs={12}>
@@ -125,7 +112,7 @@ class RegistrarUsuario extends Component {
                             </Grid>
 
                             <Grid item md={6} xs={12}>
-                                <TextField type="password" onChange={this.onChange} value={this.state.usuario.password} name="password" fullWidth label="Ingrese su email" />
+                                <TextField type="password" onChange={this.onChange} value={this.state.usuario.password} name="password" fullWidth label="Ingrese su contraseña" />
                             </Grid>
                         </Grid>
 

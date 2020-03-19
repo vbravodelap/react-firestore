@@ -15,11 +15,12 @@ export const iniciarSesion = (dispatch, firebase, email, password) => {
                     session: usuarioDB,
                     autenticado: true
                 })
-                resolve();
+                resolve({status: true});
             });
         })
         .catch(error => {
             console.log('error: ', error)
+            resolve({ status: false, mensaje: error })
         })
     });
 };
@@ -46,13 +47,13 @@ export const crearUsuario = (dispatch, firebase, usuario) => {
                     session: usuario,
                     autenticado: true
                 })
-                resolve();
-            })
+                resolve({status: true});
+            });
+        })
+        .catch(error => {
+            resolve({status: false, mensaje: error});
         });
-    })
-    .catch(error => {
-        console.log('error: ', error);
-    })
+    });
 }
 
 export const salirSesion = (dispatch, firebase) => {
@@ -70,7 +71,7 @@ export const salirSesion = (dispatch, firebase) => {
                 },
                 autenticado: false
             });
-            resolve();
+            resolve({status: true});
         })
     })
 }
