@@ -41,7 +41,7 @@ class Login extends Component {
     }
 
     onChange = e => {
-        let usuario = Object.assign({}, this.usuario);
+        let usuario = Object.assign({}, this.state.usuario);
         usuario[e.target.name] = e.target.value;
         this.setState({
             usuario: usuario

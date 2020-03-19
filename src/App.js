@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import "./App.css";
+import { FirebaseContext } from './server';
 
 // Material React
 import Grid from '@material-ui/core/Grid';
@@ -13,24 +14,31 @@ import ListaInmuebles from "./componentes/vistas/ListaInmuebles";
 import RegistrarUsuario from "./componentes/seguridad/RegistrarUsuario";
 import Login from "./componentes/seguridad/Login";
 
-class App extends Component {
-  render() {
-    return (
-      <Router>
-        <MuiThemeProvider theme={theme}>
-          <AppNavbar />
-           <Grid container>
-             <Switch>
-                <Route path="/" exact component={ListaInmuebles} /> 
-                <Route path="/auth/registrarUsuario" exact component={RegistrarUsuario} />
-                <Route path="/auth/login" exact component={Login} />
-             </Switch>
-           </Grid>
-        </MuiThemeProvider>
-      </Router>
+function App(){
+  let firebase = React.useContext(FirebaseContext);
+  const [autenticacion, setAutenticacion] = React.useState(false);
+  
+  useEffect(() => {
+    firebase.estaIniciado().then(val => {
+      setAutenticacion(val);
+    });
+  }, []);
+
+  return autenticacion !== false ? (
+    <Router>
+      <MuiThemeProvider theme={theme}>
+        <AppNavbar />
+          <Grid container>
+            <Switch>
+              <Route path="/" exact component={ListaInmuebles} /> 
+              <Route path="/auth/registrarUsuario" exact component={RegistrarUsuario} />
+              <Route path="/auth/login" exact component={Login} />
+            </Switch>
+          </Grid>
+      </MuiThemeProvider>
+    </Router>
       
-    );
-  }
+  ) : null;
 }
 
 export default App;
