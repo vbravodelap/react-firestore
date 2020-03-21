@@ -12,7 +12,7 @@ export const iniciarSesion = (dispatch, firebase, email, password) => {
                 const usuarioDB = doc.data();
                 dispatch({
                     type: "INICIAR_SESION",
-                    session: usuarioDB,
+                    sesion: usuarioDB,
                     autenticado: true
                 })
                 resolve({status: true});
@@ -44,7 +44,7 @@ export const crearUsuario = (dispatch, firebase, usuario) => {
                 usuario.id = auth.user.uid;
                 dispatch({
                     type: "INICIAR_SESION",
-                    session: usuario,
+                    sesion: usuario,
                     autenticado: true
                 })
                 resolve({status: true});
@@ -58,7 +58,7 @@ export const crearUsuario = (dispatch, firebase, usuario) => {
 
 export const salirSesion = (dispatch, firebase) => {
     return new Promise((resolve, reject) => {
-        firebase.auth.signOut().then(salir => {
+        firebase.auth.signOut().then(function(){
             dispatch({
                 type: "SALIR_SESION",
                 nuevoUsuario: {

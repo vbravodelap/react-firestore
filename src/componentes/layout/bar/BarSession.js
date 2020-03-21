@@ -7,6 +7,7 @@ import { StateContext } from '../../../sesion/store';
 import {salirSesion} from '../../../sesion/actions/sessionAction';
 import { MenuDerecha } from './menuDerecha';
 import fotoUsuarioTemp from '../../../logo.svg';
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
     sectionDesktop: {
@@ -97,7 +98,7 @@ class BarSession extends Component {
                             usuario={usuario} 
                             textoUsuario={textoUsuario}
                             fotoUsuario={fotoUsuarioTemp}
-                            salirSesion={this.salirSesion}
+                            salirSesion={this.salirSesionApp}
                         />
                     </div>
                 </Drawer>
@@ -132,4 +133,4 @@ class BarSession extends Component {
     }
 }
 
-export default compose(withStyles(styles), consumerFirebase)(BarSession);
+export default compose(withRouter, withStyles(styles), consumerFirebase)(BarSession);

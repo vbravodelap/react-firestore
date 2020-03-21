@@ -39,7 +39,6 @@ class AppNavbar extends Component {
             .get()
             .then(doc => {
                 const usuarioDB = doc.data();
-                console.log(usuarioDB)
                 dispatch({
                     type: "INICIAR_SESION",
                     sesion: usuarioDB,

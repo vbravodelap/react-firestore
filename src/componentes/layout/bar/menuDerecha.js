@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, ListItem, Link, Avatar, ListItemText } from '@material-ui/core';
 
-export const MenuDerecha = ({classes, usuario, textUsuario, fotoUsuario, salirSesion}) => (
+export const MenuDerecha = ({classes, usuario, textoUsuario, fotoUsuario, salirSesion}) => (
     <div className="classes.list">
         <List>
             <ListItem button component={Link} to="/auth/RegistrarUsuario">
@@ -9,7 +9,7 @@ export const MenuDerecha = ({classes, usuario, textUsuario, fotoUsuario, salirSe
                         classes={{primary: classes.avatarSize}}
                         src={fotoUsuario}
                     />
-                <ListItemText classes={{primary: classes.ListItemText}}  />
+                <ListItemText classes={{primary: classes.ListItemText}}  primary={textoUsuario}/>
             </ListItem>
 
             <ListItem button onClick={salirSesion}>

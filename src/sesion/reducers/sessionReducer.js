@@ -15,7 +15,7 @@ const sessionReducer = (state = initialState, action) => {
         case "INICIAR_SESION": 
             return {
                 ...state,
-                usuario: action.session,
+                usuario: action.sesion,
                 autenticado: action.autenticado
             }
 
