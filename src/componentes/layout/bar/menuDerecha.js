@@ -6,7 +6,6 @@ export const MenuDerecha = ({classes, usuario, textoUsuario, fotoUsuario, salirS
         <List>
             <ListItem button component={Link} to="/auth/RegistrarUsuario">
                     <Avatar 
-                        classes={{primary: classes.avatarSize}}
                         src={fotoUsuario}
                     />
                 <ListItemText classes={{primary: classes.ListItemText}}  primary={textoUsuario}/>

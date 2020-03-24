@@ -15,6 +15,8 @@ import ListaInmuebles from "./componentes/vistas/ListaInmuebles";
 import RegistrarUsuario from "./componentes/seguridad/RegistrarUsuario";
 import Login from "./componentes/seguridad/Login";
 import { Snackbar } from "@material-ui/core";
+import RutaAutenticada from "./componentes/seguridad/RutaAutenticada";
+import PerfilUsuario from "./componentes/seguridad/PerfilUsuario";
 
 
 function App(){
@@ -60,7 +62,8 @@ function App(){
           <AppNavbar />
             <Grid container>
               <Switch>
-                <Route path="/" exact component={ListaInmuebles} /> 
+                <RutaAutenticada path="/" exact component={ListaInmuebles} autenticadoFirebase={firebase.auth.currentUser}/> 
+                <RutaAutenticada path="/auth/perfil" excat component={PerfilUsuario} autenticadoFirebase={firebase.auth.currentUser} />
                 <Route path="/auth/registrarUsuario" exact component={RegistrarUsuario} />
                 <Route path="/auth/login" exact component={Login} />
               </Switch>
